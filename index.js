@@ -3,8 +3,9 @@ const {user} = require("./mongodb")
 const app = express()
 const cors = require("cors")
 const mongoDB = require("mongodb")
-
+const {json,urlencoded} = require("express")
 app.use(cors())
+app.use(json(),urlencoded({extended:false}))
 app.get("/",async(req,res)=>{
     try {
         res.send("hi")
@@ -17,9 +18,9 @@ app.get("/",async(req,res)=>{
 app.post("/createUser",async(req,res)=>{
     try {
         const {email} = req.body
-
+console.log(req.body);
         const checkuser = await user.findOne({email:email})
-
+console.log(checkuser);
         if(checkuser){
             res.send("user already registered")
         }
@@ -30,6 +31,7 @@ app.post("/createUser",async(req,res)=>{
             res.send(data)
         }
     } catch (error) {
+        console.log(error);
         res.send(error)
     }
 })
